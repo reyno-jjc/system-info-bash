@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo "System Hostname" >> info.txt
+date >> info.txt
+
+sessions_uptime=$(last | grep "$date '+%b %d')" | grep 'reboot' | grep -v 'still running'
+current_time=$(awk '{print int($1 / 60)}' /proc/uptime)
+
+echo $kernel_verion
+echo dmidecode -t4|awk '/Handle / {print $2}' |sed 's/ , //'
+[root@localhost tmp]# free -m
+[root@localhost tmp]# df -h
+
+echo ifconfig eth |awk '/inet addr:/ {print $}'|tr -d 'addr:'
+total_uptime=$((sessions_uptime + current_time))
+echo "TOTAL CURRENT RUNTIME OF THE DAY: ${total_uptime}"
+echo "System Name Servers" >> info.txt
+cat /etc/resolve.conf | grep name >> info.txt
